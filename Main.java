@@ -44,9 +44,9 @@ public class Main {
 
         System.out.println("\nКласс: transport.Car");
         System.out.println("Исходный:");
-        System.out.println("    " + car);
+        System.out.println("    " + car.getClass());
         System.out.println("Созданный:");
-        System.out.println("    " + createdCar);
+        System.out.println("    " + createdCar.getClass());
 
         Motorcycle moto = new Motorcycle("Yamaha", 3);
         Vehicle createdMoto = VehicleUtils.createVehicle("Honda", 2, moto);
@@ -62,18 +62,63 @@ public class Main {
         System.out.println("=================================================");
 
         Scooter scooter = new Scooter("Honda", 3);
-
         System.out.println("\nКласс: transport.Scooter:");
         System.out.println("    " + scooter);
 
-        Quadrocyle quadrocyle = new Quadrocyle("Yamaha", 3);
+        scooter.addModel("Model_NEW", 555_555);
+        System.out.println("\nПосле scooter.addModel(\"Model_NEW\", 555555):");
+        System.out.println("    " + scooter);
 
+        scooter.setPriceByName("Model_1", 999_999);
+        System.out.println("\nПосле scooter.setPriceByName(\"Model_1\", 999999):");
+        System.out.println("    " + scooter);
+
+        scooter.updateModelName("Model_2", "Model_Y");
+        System.out.println("\nПосле scooter.updateModelName(\"Model_2\", \"Model_Y\"):");
+        System.out.println("    " + scooter);
+
+        scooter.deleteModel("Model_NEW");
+        System.out.println("\nПосле scooter.deleteModel(\"Model_NEW\"):");
+        System.out.println("    " + scooter);
+
+        Quadrocyle quadrocyle = new Quadrocyle("Yamaha", 3);
         System.out.println("\nКласс: transport.Quadrocyle:");
         System.out.println("    " + quadrocyle);
 
-        Moped moped = new Moped("Suzuki", 3);
+        quadrocyle.addModel("Model_NEW", 555_555);
+        System.out.println("\nПосле quadrocyle.addModel(\"Model_NEW\", 555555):");
+        System.out.println("    " + quadrocyle);
 
+        quadrocyle.setPriceByName("Model_1", 999_999);
+        System.out.println("\nПосле quadrocyle.setPriceByName(\"Model_1\", 999999):");
+        System.out.println("    " + quadrocyle);
+
+        quadrocyle.updateModelName("Model_2", "Model_Y");
+        System.out.println("\nПосле quadrocyle.updateModelName(\"Model_2\", \"Model_Y\"):");
+        System.out.println("    " + quadrocyle);
+
+        quadrocyle.deleteModel("Model_NEW");
+        System.out.println("\nПосле quadrocyle.deleteModel(\"Model_NEW\"):");
+        System.out.println("    " + quadrocyle);
+
+        Moped moped = new Moped("Suzuki", 3);
         System.out.println("\nКласс: transport.Moped:");
+        System.out.println("    " + moped);
+
+        moped.addModel("Model_NEW", 555_555);
+        System.out.println("\nПосле moped.addModel(\"Model_NEW\", 555555):");
+        System.out.println("    " + moped);
+
+        moped.setPriceByName("Model_1", 999_999);
+        System.out.println("\nПосле moped.setPriceByName(\"Model_1\", 999999):");
+        System.out.println("    " + moped);
+
+        moped.updateModelName("Model_2", "Model_Y");
+        System.out.println("\nПосле moped.updateModelName(\"Model_2\", \"Model_Y\"):");
+        System.out.println("    " + moped);
+
+        moped.deleteModel("Model_NEW");
+        System.out.println("\nПосле moped.deleteModel(\"Model_NEW\"):");
         System.out.println("    " + moped);
 
         System.out.println("\n=================================================");

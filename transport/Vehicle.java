@@ -18,12 +18,4 @@ public interface Vehicle extends java.io.Serializable, Cloneable {
 
     void addModel(String name, double price) throws DuplicateModelNameException;
     void deleteModel(String name) throws NoSuchModelNameException;
-
-    String toString();
-
-    boolean equals(Object obj);
-
-    int hashCode();
-
-    Object clone();
 }

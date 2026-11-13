@@ -10,7 +10,7 @@ import exceptions.ModelPriceOutOfBoundsException;
 
 public class Scooter implements Vehicle {
     private String _mark;
-    private HashMap<String, Model> _models;
+    private HashMap<String, Double> _models;
 
     public Scooter(String mark, int size) {
         _mark = mark;
@@ -21,7 +21,7 @@ public class Scooter implements Vehicle {
             String name = "Model_" + (i + 1);
             double price = 100_000 + random.nextInt(9_900_000);
 
-            _models.put(name, new Model(name, price));
+            _models.put(name, price);
         }
     }
 
@@ -49,9 +49,8 @@ public class Scooter implements Vehicle {
         if (_models.containsKey(newName)) {
             throw new DuplicateModelNameException(newName);
         }
-        Model model = _models.remove(oldName);
-        model.setName(newName);
-        _models.put(newName, model);
+        Double price = _models.remove(oldName);
+        _models.put(newName, price);
     }
 
     @Override
@@ -61,12 +60,12 @@ public class Scooter implements Vehicle {
 
     @Override
     public double getPriceByName(String name) throws NoSuchModelNameException {
-        Model model = _models.get(name);
+        Double price = _models.get(name);
 
-        if (model == null) {
+        if (price == null) {
             throw new NoSuchModelNameException(name);
         }
-        return model.getPrice();
+        return price;
     }
 
     @Override
@@ -74,12 +73,11 @@ public class Scooter implements Vehicle {
         if (newPrice <= 0) {
             throw new ModelPriceOutOfBoundsException(newPrice);
         }
-        Model model = _models.get(name);
 
-        if (model == null) {
+        if (!_models.containsKey(name)) {
             throw new NoSuchModelNameException(name);
         }
-        model.setPrice(newPrice);
+        _models.put(name, newPrice);
     }
 
     @Override
@@ -87,8 +85,8 @@ public class Scooter implements Vehicle {
         double[] prices = new double[_models.size()];
         int i = 0;
 
-        for (Model model : _models.values()) {
-            prices[i++] = model.getPrice();
+        for (Double price : _models.values()) {
+            prices[i++] = price;
         }
         return prices;
     }
@@ -102,7 +100,7 @@ public class Scooter implements Vehicle {
         if (_models.containsKey(name)) {
             throw new DuplicateModelNameException(name);
         }
-        _models.put(name, new Model(name, price));
+        _models.put(name, price);
     }
 
     @Override
@@ -129,7 +127,7 @@ public class Scooter implements Vehicle {
 
         boolean first = true;
 
-        for (Map.Entry<String, Model> entry : _models.entrySet()) {
+        for (Map.Entry<String, Double> entry : _models.entrySet()) {
             if (!first) {
                 sb.append(", ");
             }
@@ -138,7 +136,7 @@ public class Scooter implements Vehicle {
             sb.append("{name='")
                     .append(entry.getKey())
                     .append("', price=")
-                    .append(entry.getValue().getPrice())
+                    .append(entry.getValue())
                     .append("}");
         }
         sb.append("]}");
@@ -165,14 +163,14 @@ public class Scooter implements Vehicle {
             return false;
         }
 
-        for (Map.Entry<String, Model> entry : _models.entrySet()) {
-            Model otherModel = other._models.get(entry.getKey());
+        for (Map.Entry<String, Double> entry : _models.entrySet()) {
+            Double otherPrice = other._models.get(entry.getKey());
 
-            if (other._models.get(entry.getKey()) == null) {
+            if (otherPrice == null) {
                 return false;
             }
 
-            if (Double.compare(entry.getValue().getPrice(), otherModel.getPrice()) != 0) {
+            if (Double.compare(entry.getValue(), otherPrice) != 0) {
                 return false;
             }
         }
@@ -183,9 +181,9 @@ public class Scooter implements Vehicle {
     public int hashCode() {
         int result = _mark.hashCode();
 
-        for (Map.Entry<String, Model> entry : _models.entrySet()) {
+        for (Map.Entry<String, Double> entry : _models.entrySet()) {
             result = 31 * result + entry.getKey().hashCode();
-            result = 31 * result + Double.hashCode(entry.getValue().getPrice());
+            result = 31 * result + Double.hashCode(entry.getValue());
         }
         return result;
     }
@@ -194,34 +192,11 @@ public class Scooter implements Vehicle {
     public Scooter clone() {
         try {
             Scooter cloned = (Scooter) super.clone();
-            cloned._models = new HashMap<>();
+            cloned._models = new HashMap<>(_models);
 
-            for (Map.Entry<String, Model> entry : _models.entrySet()) {
-                Model model = entry.getValue();
-
-                cloned._models.put(entry.getKey(), new Model(model.getName(), model.getPrice()));
-            }
             return cloned;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError(e);
         }
-    }
-
-    private static class Model implements java.io.Serializable {
-        private String _name;
-        private double _price;
-
-        public Model(String name, double price) {
-            _name = name;
-            _price = price;
-        }
-
-        public String getName() { return _name; }
-
-        public void setName(String name) { _name = name; }
-
-        public double getPrice() { return _price; }
-
-        public void setPrice(double price) { _price = price; }
     }
 }
